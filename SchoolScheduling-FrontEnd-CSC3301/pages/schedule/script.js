@@ -50,6 +50,27 @@ class CourseTime {
     occupied = false; // true if taken by course
 }
 
+class Location {
+   constructor(name) {
+    this.name = name
+   } 
+   name
+   free = {
+    '07': true,
+    '08': true,
+    '09': true,
+    '10': true,
+    '11': true,
+    '12': true,
+    '13': true,
+    '14': true,
+    '15': true,
+    '16': true,
+    '17': true,
+    '18': true
+   }
+}
+
 class Course {
     constructor(courseID, courseName) {
         this.courseID = courseID;
@@ -70,7 +91,17 @@ class Course {
 
     setCourseTime(courseTime) {
         // add courseTime to courseTimes array
-        if (courseTime.occupied) { 
+        if (courseTime.occupied || lo) { 
+            console.error("Course time already taken")
+            return 
+        }
+        this.courseTimes.push(courseTime)
+        courseTime.occupied = true
+    }
+
+    setCourseTime(courseTime) {
+        // add courseTime to courseTimes array
+        if (location.occupied) { 
             console.error("Course time already taken")
             return 
         }
@@ -123,3 +154,51 @@ let csc3301 = new Course("csc3301", "Programming languages")
 
 csc3600.setCourseTime(courseTimes[0])
 csc3301.setCourseTime(courseTimes[0])
+
+class ScheduleInfo {
+    constructor(startTime, courseName, venue) {
+        this.startTime = startTime
+        this.courseName = courseName
+        this.venue = venue
+    }
+    
+    startTime
+    courseName
+    venue
+}
+
+let simplifiedInfoHtml = (info) => `
+<div class="item-p-div">
+<p><span class="icon-span"><img src="./icons/clock.png" alt="icon" class="icon" /></span> &nbsp; <span
+    class="text-span">Starts: ${info.startTime}</span></p>
+<p><span class="icon-span"><img src="./icons/book.png" alt="icon" class="icon" /></span> &nbsp; <span
+    class="text-span">Course: ${info.courseName}</span></p>
+<p><span class="icon-span"><img src="./icons/location-pin.png" alt="icon" class="icon" /></span> &nbsp; <span
+    class="text-span">Venue: ${info.venue}</span></p>
+</div>
+`
+
+function addHtml(parent, child) {
+    document.getElementById(parent).innerHTML += child
+}
+
+function addToSimplifiedSchedule(items) { // only fetch 3
+    addHtml('now-span', simplifiedInfoHtml(items[0]))
+    addHtml('next-span', simplifiedInfoHtml(items[1]))
+    addHtml('after-span', simplifiedInfoHtml(items[2]))
+}
+
+let info1 = new ScheduleInfo("08:00", "SE", "CL2")
+let info2 = new ScheduleInfo("11:00", "Algorithms", "SLH")
+let info3 = new ScheduleInfo("14:00", "Programming", "GLT")
+
+console.log(info1.courseName, info2.startTime, info3.venue)
+
+addToSimplifiedSchedule([info1, info2, info3])
+
+    /*
+    setTimeout(() => {
+        document.get
+
+    }, 3600000) // update every hour 1h to ms = 1h*60m/h*60s/m*1000ms/s = 3 600 000ms
+    */
